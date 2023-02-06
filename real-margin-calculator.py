@@ -114,57 +114,29 @@ for row in table.find_all('tr')[1:]:
 
 tickers = sp500_tickers
 
-#tickList = ["PINS", "CRSR", "CRCT", "AMZN", "META", "DBX", "WIX", "GOOGL", ""
+# tickList = ["PINS", "CRSR", "CRCT", "AMZN", "META", "DBX", "WIX", "GOOGL", ""
 #            "BABA", "VZ", "TTCF", "ROKU", "TDOC", "NFLX", "MSFT"]
 
 tickList = tickers
 allMargins = {}
 
-for i in tickList:
-
-    # myTicker = validate_str_input("Enter a ticker to check margin: ")
-    myTicker = i
-
-    print("")
-    print(myTicker)
-    print("")
-
-    # Create a master list so we don't have to run the function twice
-    adjusted_margins = adjusted_margin(myTicker)
-
-    years, marginList = adjusted_margins[0], adjusted_margins[1]
-
-    for index, year in enumerate(years):
-        if year == "TTM" and len(marginList) > index:
-            print(f"TTM: {marginList[index]}%")
-        elif len(marginList) > index:
-            print(f"Year: {year} Margin: {marginList[index]}%")
-
-    allMargins[i] = marginList
-
-# allMargins = {'PINS': [-123.46, -18.29, 12.74, 4.5], 'CRSR': [2.21, 9.06, -0.42, 0.09], 'CRCT': [-2.48, 22.62, -13.69, -4.8], 'AMZN': [5.27, 4.33, -5.85, -8.77], 'META': [23.16, 19.89, 25.4, 12.63], 'DBX': [7.8, 11.97, 19.18, 18.35], 'WIX': [2.39, -1.83, -15.23, -23.0], 'GOOGL': [12.47, 16.35, 20.04, 15.71], 'BABA': [16.94, 20.3, 19.31, 7.67, 11.75], 'VZ': [12.82, 16.72, -21.21, 7.6, 6.9], 'TTCF': [-5.28, -24.13, -34.36, -55.54], 'ROKU': [-13.83, -3.84, 0.02, -14.05], 'TDOC': [-8.63, -50.74, -8.49, -7.04], 'NFLX': [-17.59, 6.06, -1.8, 3.3, 0.95], 'MSFT': [26.71, 27.93, 29.75, 29.07, 22.56]}
+myTicker = validate_str_input("Enter a ticker to check margin: ").upper()
 
 
-print(allMargins)
+print("")
+print(f"Gathering margin data for {myTicker}")
+print("")
 
-marginSums = [[], [], [], []]
+# Create a master list so we don't have to run the function twice
+adjusted_margins = adjusted_margin(myTicker)
 
-for key in allMargins.keys():
-    print(f"{key} {allMargins[key]}")
-    for j in range(3):
-        marginSums[j].append(allMargins[key][j])
+years, marginList = adjusted_margins[0], adjusted_margins[1]
 
-    if len(allMargins[key]) > 3:
-        marginSums[3].append(allMargins[key][3])
+for index, year in enumerate(years):
+    if year == "TTM" and len(marginList) > index:
+        print(f"TTM: {marginList[index]}%")
+    elif len(marginList) > index:
+        print(f"Year: {year} Margin: {marginList[index]}%")
 
-for i in range(4):
-    if i == 3:
-        print(f"TTM Mean: {decimal_round(np.mean(marginSums[i]))}")
-    else:
-        print(f"{2019 + i} Mean: {decimal_round(np.mean(marginSums[i]))}")
 
-for i in range(4):
-    if i == 3:
-        print(f"TTM Median: {decimal_round(np.median(marginSums[i]))}")
-    else:
-        print(f"{2019 + i} Median: {decimal_round(np.median(marginSums[i]))}")
+

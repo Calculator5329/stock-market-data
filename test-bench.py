@@ -4,8 +4,6 @@ myTicker = "meta"
 
 ticker = yf.Ticker(myTicker)
 
-print(ticker.quarterly_cashflow)
+financials = ticker.get_financials(as_dict=True)
 
-data = yf.download(myTicker, interval='3mo', period='max')
-
-print(data)
+print(ticker.get_shares()['BasicShares'][2021])
